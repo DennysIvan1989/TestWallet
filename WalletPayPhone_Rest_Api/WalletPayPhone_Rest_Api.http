@@ -1,0 +1,6 @@
+@WalletPayPhone_Rest_Api_HostAddress = http://localhost:5069
+
+GET {{WalletPayPhone_Rest_Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
