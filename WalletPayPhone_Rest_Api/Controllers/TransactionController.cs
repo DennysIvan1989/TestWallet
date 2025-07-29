@@ -224,6 +224,45 @@ namespace WalletPayPhone_Rest_Api.Controllers
             return Ok(resultado);
         }
 
+        [HttpPost("wallet-movement/transfer")]
+        public IActionResult TransferWalletMovement([BindRequired, FromBody] TransferDto walletMovTransfer)
+        {
+
+            var resultado = new ResultadoDto<string>();
+            try
+            {
+
+                resultado = _walletMov.Transfer(walletMovTransfer);
+                _wdbcontext.SaveChanges();
+            }
+            catch (WalletException we)
+            {
+
+                return StatusCode(StatusCodes.Status409Conflict, new
+                {
+
+                    correcto = false,
+                    codigoError = we.Code,
+                    mensaje = we.Message
+                });
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status409Conflict, new
+                {
+
+                    correcto = false,
+                    codigoError = ErrorEnum.ERR999.ToString(),
+                    informacion = ErrorEnum.ERR999.GetDescription(),
+                    mensaje = ex.Message
+                });
+            }
+
+            return Ok(resultado);
+        }
+
         [HttpGet("wallet-movement/{id}")]
         public IActionResult DetailWalletMovement(int id)
         {
